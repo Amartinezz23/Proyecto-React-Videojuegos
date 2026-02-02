@@ -1,8 +1,13 @@
 #root {
-  max-width: 1280px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+h1 {
+  color: var(--accent-main);
+  letter-spacing: 0.05em;
 }
 
 .logo {
