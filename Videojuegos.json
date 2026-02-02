@@ -45,7 +45,7 @@
       "plataformas": [1, 2, 3],
       "categorias": [6, 7],
       "precio": 69.99,
-      "urlImagen": "https://i.pinimg.com/1200x/32/06/dd/3206dd46cb3cb8b2b8377119d199ed08.jpg",
+      "urlImagen": "https://i.pinimg.com/736x/e8/f8/89/e8f889769fb64e950c97e27afc88434d.jpg",
       "urlVideo": "https://example.com/fifa24.mp4"
     },
     {
@@ -57,7 +57,7 @@
       "plataformas": [1, 2, 3],
       "categorias": [4],
       "precio": 59.99,
-      "urlImagen": "https://i.pinimg.com/736x/79/1a/ca/791acac7db9356025432759c7156e949.jpg",
+      "urlImagen": "https://i.pinimg.com/1200x/7a/cf/72/7acf7205b2cafa44598a5d0316cb3f02.jpg",
       "urlVideo": "https://example.com/cod.mp4"
     },
     {
@@ -69,7 +69,7 @@
     "plataformas": [2],
     "categorias": [8, 9],
     "precio": 69.99,
-    "urlImagen": "https://i.pinimg.com/736x/dc/ad/bf/dcadbf12865e4df00d89d2e84e3344dd.jpg",
+    "urlImagen": "https://i.pinimg.com/1200x/73/76/16/7376161d93cba6f27a286d593bbc3e5a.jpg",
     "urlVideo": "https://example.com/gow.mp4"
   },
   {
