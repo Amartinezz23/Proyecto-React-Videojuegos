@@ -7,7 +7,7 @@ const MenuCategoria = ({categorias, categoriasSeleccionadas, onChangeCategoria})
             {categorias.map((categoria,index)=>{
                 return(
                     <div key={categoria.id}>
-                        <label><input type="checkbox" id="cbox1" value="first_checkbox" checked={categoriasSeleccionadas.includes(categoria.id)} onChange={()=>onChangeCategoria(categoria.id)}/>{categoria.nombre} </label>
+                        <label><input type="checkbox" id="cbox1" value="first_checkbox" checked={categoriasSeleccionadas.includes(Number(categoria.id))} onChange={()=>onChangeCategoria(Number(categoria.id))}/>{categoria.nombre} </label>
                     </div>
                     
                 )

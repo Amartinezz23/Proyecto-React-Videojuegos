@@ -1,7 +1,7 @@
 import React from "react";
 import "./Detalle.css";
 
-const Detalle = ({juego, onCerrar}) => {
+const Detalle = ({juego, onCerrar, onEliminar}) => {
     return(
         <div className="modal-overlay" onClick={onCerrar}>
             <div className="modal-container" onClick={(e) => e.stopPropagation()}>
@@ -33,6 +33,11 @@ const Detalle = ({juego, onCerrar}) => {
                         <div className="modal-description">
                             <h3>Descripción</h3>
                             <p>{juego.descripcion}</p>
+                        </div>
+
+                        <div className="modal-eliminar">
+                            <h4>Eliminar Juego</h4>
+                            <button onClick={()=> onEliminar(juego.id)}>Eliminar juego</button>
                         </div>
                     </div>
                 </div>
