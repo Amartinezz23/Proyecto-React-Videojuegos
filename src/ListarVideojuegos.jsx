@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
 import './ListarVideojuegos.css';
 
-const ListarVideojuegos = () => {
+const ListarVideojuegos = ({juegos, onClickVideojuego}) => {
 
-  const [videojuego, setVideojuego] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:3000/videojuegos')
-      .then(response => response.json())
-      .then(data => setVideojuego(data));
-  }, []);
+  
 
   return (
     <div className="container">
-      {videojuego.map((juego) => {
+      {juegos.map((juego) => {
         return (
-          <div className="juego-card" key={juego.id}>
+          <div onClick={()=>onClickVideojuego(juego)} className="juego-card" key={juego.id}>
             <img
               className="imagen"
               src={juego.urlImagen}
@@ -30,6 +24,7 @@ const ListarVideojuegos = () => {
         );
       })}
     </div>
+    
   );
 };
 
