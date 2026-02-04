@@ -95,6 +95,65 @@
       "urlVideo": "https://example.com/zelda.mp4"
     },
     {
+      "id": "2",
+      "nombre": "Elden Ring",
+      "descripcion": "RPG de acción en un vasto mundo abierto creado por FromSoftware y George R.R. Martin.",
+      "fechaLanzamiento": "2022-02-25",
+      "compania": "FromSoftware",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        8,
+        9
+      ],
+      "precio": 59.99,
+      "urlImagen": "https://i.pinimg.com/736x/8c/96/27/8c9627ec5e4e5c5f9e3e4c4a0f5a3b2e.jpg",
+      "urlVideo": "https://example.com/eldenring.mp4"
+    },
+    {
+      "id": "3",
+      "nombre": "Street Fighter 6",
+      "descripcion": "El legendario juego de lucha regresa con gráficos renovados y nuevos personajes.",
+      "fechaLanzamiento": "2023-06-02",
+      "compania": "Capcom",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        1,
+        2
+      ],
+      "precio": 69.99,
+      "urlImagen": "https://i.pinimg.com/736x/a1/2b/3c/a12b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg",
+      "urlVideo": "https://example.com/sf6.mp4"
+    },
+    {
+      "id": "4",
+      "nombre": "Stardew Valley",
+      "descripcion": "Simulador de granja donde cultivas la tierra, crías animales y construyes relaciones con los habitantes del pueblo.",
+      "fechaLanzamiento": "2016-02-26",
+      "compania": "ConcernedApe",
+      "plataformas": [
+        1,
+        4,
+        5,
+        6
+      ],
+      "categorias": [
+        6,
+        8,
+        11
+      ],
+      "precio": 14.99,
+      "urlImagen": "https://i.pinimg.com/736x/f3/45/67/f34567890abcdef1234567890abcdef1.jpg",
+      "urlVideo": "https://example.com/stardew.mp4"
+    },
+    {
       "id": "5",
       "nombre": "Minecraft",
       "descripcion": "Videojuego sandbox que permite a los jugadores construir, explorar y sobrevivir en mundos generados proceduralmente, fomentando la creatividad, la lógica y el aprendizaje colaborativo.",
@@ -138,10 +197,46 @@
     },
     {
       "id": "7",
-      "nombre": "Hollow Knight",
-      "descripcion": "Aventura de acción en 2D ambientada en un mundo oscuro y melancólico, con exploración no lineal, combates exigentes y una historia profunda contada de forma ambiental.",
-      "fechaLanzamiento": "2017-02-24",
-      "compania": "Team Cherry",
+      "nombre": "Valorant",
+      "descripcion": "Shooter táctico en primera persona 5v5 con habilidades únicas por personaje.",
+      "fechaLanzamiento": "2020-06-02",
+      "compania": "Riot Games",
+      "plataformas": [
+        1
+      ],
+      "categorias": [
+        4
+      ],
+      "precio": 0,
+      "urlImagen": "https://i.pinimg.com/736x/bc/de/f1/bcdef1234567890abcdef1234567890a.jpg",
+      "urlVideo": "https://example.com/valorant.mp4"
+    },
+    {
+      "id": "9",
+      "nombre": "Tetris Effect",
+      "descripcion": "El clásico Tetris reimaginado con efectos visuales y musicales hipnóticos.",
+      "fechaLanzamiento": "2018-11-09",
+      "compania": "Enhance Games",
+      "plataformas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "categorias": [
+        2,
+        11
+      ],
+      "precio": 39.99,
+      "urlImagen": "https://i.pinimg.com/736x/12/34/56/123456789abcdef0123456789abcdef0.jpg",
+      "urlVideo": "https://example.com/tetris.mp4"
+    },
+    {
+      "id": "10",
+      "nombre": "Celeste",
+      "descripcion": "Plataformas desafiante sobre escalar una montaña mientras enfrentas tus miedos internos.",
+      "fechaLanzamiento": "2018-01-25",
+      "compania": "Maddy Makes Games",
       "plataformas": [
         1,
         2,
@@ -152,9 +247,46 @@
         3,
         8
       ],
-      "precio": 14.99,
-      "urlImagen": "https://i.pinimg.com/736x/fc/85/fe/fc85fe47b9243ba856d88a29559ce8f0.jpg",
-      "urlVideo": "https://example.com/hollowknight.mp4"
+      "precio": 19.99,
+      "urlImagen": "https://i.pinimg.com/736x/fe/dc/ba/fedcba9876543210fedcba9876543210.jpg",
+      "urlVideo": "https://example.com/celeste.mp4"
+    },
+    {
+      "id": "11",
+      "nombre": "Duolingo",
+      "descripcion": "Aplicación educativa para aprender idiomas de forma divertida y gamificada.",
+      "fechaLanzamiento": "2011-11-30",
+      "compania": "Duolingo Inc",
+      "plataformas": [
+        5,
+        6
+      ],
+      "categorias": [
+        10,
+        11
+      ],
+      "precio": 0,
+      "urlImagen": "https://i.pinimg.com/736x/98/76/54/987654321098765432109876543210ab.jpg",
+      "urlVideo": "https://example.com/duolingo.mp4"
+    },
+    {
+      "id": "12",
+      "nombre": "Overwatch 2",
+      "descripcion": "Shooter de héroes en equipos de 5v5 con personajes únicos y habilidades especiales.",
+      "fechaLanzamiento": "2022-10-04",
+      "compania": "Blizzard",
+      "plataformas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "categorias": [
+        4
+      ],
+      "precio": 0,
+      "urlImagen": "https://i.pinimg.com/736x/11/22/33/112233445566778899aabbccddeeff00.jpg",
+      "urlVideo": "https://example.com/overwatch2.mp4"
     }
   ]
 }

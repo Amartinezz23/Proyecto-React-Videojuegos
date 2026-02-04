@@ -6,6 +6,7 @@ import ListarVideojuegos from './ListarVideojuegos'
 import MenuCategoria from './MenuCategoria'
 import Detalle from './DetalleComponente'
 import MenuPlataforma from './MenuPlataforma'
+import Formulario from './Formulario'
 
 function App() {
   
@@ -101,6 +102,20 @@ function App() {
       
     }
 
+    const onAgregar = async (juego) => {
+      const response = await fetch(`http://localhost:3000/videojuegos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+          },
+        body: JSON.stringify(juego)
+      });
+
+      const data = await response.json();
+  
+      setVideojuegos([...videojuegos, data]);
+    }
+
     let juegosFiltradosCategorias = videojuegos.filter(juego=>
       juego.categorias.every(id=>categoriasSeleccionadas.includes(id))
     )
@@ -112,6 +127,7 @@ function App() {
     <>
       <MenuCategoria categorias={categorias} categoriasSeleccionadas={categoriasSeleccionadas} onChangeCategoria={onChangeCategoria}></MenuCategoria>
       <MenuPlataforma plataformas={plataformas} plataformasSeleccionadas={plataformasSeleccionadas} onChangePlataforma={onChangePlataforma}></MenuPlataforma>
+      <Formulario categorias={categorias} plataformas={plataformas} onAgregarJuego={onAgregar}></Formulario>
       <ListarVideojuegos juegos={juegosFiltrados} onClickVideojuego={clickarJuego}></ListarVideojuegos>
       {juegoClickado && <Detalle juego={juegoClickado } onCerrar={quitarjuegoClickado} onEliminar={onEliminar}> </Detalle>}
       
