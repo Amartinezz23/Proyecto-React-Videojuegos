@@ -491,3 +491,39 @@
     right: 16px;
   }
 }
+
+.modal-eliminar {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-eliminar h4 {
+  font-size: 1.1rem;
+  color: #ff4d4d;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.modal-eliminar button {
+  padding: 0.9rem 2rem;
+  background: linear-gradient(135deg, #ff4d4d, #ff1744);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(255, 77, 77, 0.4);
+}
+
+.modal-eliminar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(255, 77, 77, 0.6);
+  background: linear-gradient(135deg, #ff1744, #d50000);
+}
+
+.modal-eliminar button:active {
+  transform: translateY(0);
+}
