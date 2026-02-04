@@ -43,7 +43,7 @@
       "fechaLanzamiento": "2023-09-29",
       "compania": "EA Sports",
       "plataformas": [1, 2, 3],
-      "categorias": [6, 7],
+      "categorias": [6],
       "precio": 69.99,
       "urlImagen": "https://i.pinimg.com/736x/e8/f8/89/e8f889769fb64e950c97e27afc88434d.jpg",
       "urlVideo": "https://example.com/fifa24.mp4"
