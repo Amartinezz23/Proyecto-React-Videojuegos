@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-
-
+import './Formulario.css'
 const Formulario = ({ categorias, plataformas, onAgregarJuego }) => {
   const [nombre, setNombre] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -56,10 +55,10 @@ const Formulario = ({ categorias, plataformas, onAgregarJuego }) => {
     }
 
     let juegoNuevo = {
-      nombre: nombre,
-      descripcion: descripcion,
+      nombre,
+      descripcion,
       fechaLanzamiento: fecha,
-      compania: compania,
+      compania,
       plataformas: plataformasElegidas,
       categorias: categoriasElegidas,
       precio: Number(precio),
@@ -72,127 +71,131 @@ const Formulario = ({ categorias, plataformas, onAgregarJuego }) => {
   }
 
   return (
-    <div style={{ maxWidth: "700px", margin: "2rem auto", padding: "1.5rem" }}>
-      <form onSubmit={enviar}>
-        <h2>Añadir juego</h2>
+    <div className="formulario-container">
+      <form className="formulario-form" onSubmit={enviar}>
+        <h2 className="formulario-title">Añadir juego</h2>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Nombre del juego:</label>
+        <div className="form-group">
+          <label className="form-label">Nombre del juego:</label>
           <input
             type="text"
+            className="form-input"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Descripción:</label>
+        <div className="form-group">
+          <label className="form-label">Descripción:</label>
           <textarea
+            className="form-textarea"
             value={descripcion}
             onChange={(e) => setDescripcion(e.target.value)}
             maxLength="200"
             required
             rows="3"
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
-          <small>{descripcion.length}/200</small>
+          <small className="form-small">{descripcion.length}/200</small>
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Fecha de lanzamiento:</label>
+        <div className="form-group">
+          <label className="form-label">Fecha de lanzamiento:</label>
           <input
             type="date"
+            className="form-input"
             value={fecha}
             onChange={(e) => setFecha(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Compañía:</label>
+        <div className="form-group">
+          <label className="form-label">Compañía:</label>
           <input
             type="text"
+            className="form-input"
             value={compania}
             onChange={(e) => setCompania(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>Precio:</label>
+        <div className="form-group">
+          <label className="form-label">Precio:</label>
           <input
             type="number"
+            className="form-input"
             step="0.01"
             min="0"
             value={precio}
             onChange={(e) => setPrecio(e.target.value)}
             required
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>URL de la imagen:</label>
+        <div className="form-group">
+          <label className="form-label">URL de la imagen:</label>
           <input
             type="url"
+            className="form-input"
             value={imagen}
             onChange={(e) => setImagen(e.target.value)}
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <div style={{ marginBottom: "1rem" }}>
-          <label>URL del video:</label>
+        <div className="form-group">
+          <label className="form-label">URL del video:</label>
           <input
             type="url"
+            className="form-input"
             value={video}
             onChange={(e) => setVideo(e.target.value)}
-            style={{ width: "100%", padding: "8px", marginTop: "5px" }}
           />
         </div>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <h4>Categorías:</h4>
-          {categorias.map((cat) => (
-            <div key={cat.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={categoriasElegidas.includes(Number(cat.id))}
-                  onChange={() => cambiarCategoria(Number(cat.id))}
-                />
-                {cat.nombre}
-              </label>
-            </div>
-          ))}
+        <div className="form-group">
+          <h4 className="form-subtitle">Categorías:</h4>
+          <div className="form-checkbox-group">
+            {categorias.map((cat) => (
+              <div key={cat.id} className="form-checkbox-item">
+                <label className="form-checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox"
+                    checked={categoriasElegidas.includes(Number(cat.id))}
+                    onChange={() => cambiarCategoria(Number(cat.id))}
+                  />
+                  {cat.nombre}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div style={{ marginBottom: "1.5rem" }}>
-          <h4>Plataformas:</h4>
-          {plataformas.map((plat) => (
-            <div key={plat.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={plataformasElegidas.includes(Number(plat.id))}
-                  onChange={() => cambiarPlataforma(Number(plat.id))}
-                />
-                {plat.nombre}
-              </label>
-            </div>
-          ))}
+        <div className="form-group">
+          <h4 className="form-subtitle">Plataformas:</h4>
+          <div className="form-checkbox-group">
+            {plataformas.map((plat) => (
+              <div key={plat.id} className="form-checkbox-item">
+                <label className="form-checkbox-label">
+                  <input
+                    type="checkbox"
+                    className="form-checkbox"
+                    checked={plataformasElegidas.includes(Number(plat.id))}
+                    onChange={() => cambiarPlataforma(Number(plat.id))}
+                  />
+                  {plat.nombre}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <button type="submit" style={{ padding: "10px 20px", marginRight: "10px" }}>
-          Crear juego
-        </button>
-        <button type="button" onClick={limpiar} style={{ padding: "10px 20px" }}>
-          Limpiar
-        </button>
+        <div className="form-buttons">
+          <button type="submit" className="btn-submit">Crear juego</button>
+          <button type="button" className="btn-clear" onClick={limpiar}>Limpiar</button>
+        </div>
       </form>
     </div>
   );

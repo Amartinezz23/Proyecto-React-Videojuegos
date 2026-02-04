@@ -110,7 +110,7 @@
         9
       ],
       "precio": 59.99,
-      "urlImagen": "https://i.pinimg.com/736x/8c/96/27/8c9627ec5e4e5c5f9e3e4c4a0f5a3b2e.jpg",
+      "urlImagen": "https://i.pinimg.com/736x/24/2f/a4/242fa41f5955c45b5dbd0284cb1e1275.jpg",
       "urlVideo": "https://example.com/eldenring.mp4"
     },
     {
@@ -129,7 +129,7 @@
         2
       ],
       "precio": 69.99,
-      "urlImagen": "https://i.pinimg.com/736x/a1/2b/3c/a12b3c4d5e6f7a8b9c0d1e2f3a4b5c6d.jpg",
+      "urlImagen": "https://i.pinimg.com/736x/b6/17/2c/b6172c7897258e1dbcbb75c645316eb1.jpg",
       "urlVideo": "https://example.com/sf6.mp4"
     },
     {
@@ -150,7 +150,7 @@
         11
       ],
       "precio": 14.99,
-      "urlImagen": "https://i.pinimg.com/736x/f3/45/67/f34567890abcdef1234567890abcdef1.jpg",
+      "urlImagen": "https://i.pinimg.com/736x/04/20/b2/0420b2b75dc2ec25bc65b93ab6f9c4ca.jpg",
       "urlVideo": "https://example.com/stardew.mp4"
     },
     {
@@ -208,7 +208,7 @@
         4
       ],
       "precio": 0,
-      "urlImagen": "https://i.pinimg.com/736x/bc/de/f1/bcdef1234567890abcdef1234567890a.jpg",
+      "urlImagen": "https://i.pinimg.com/1200x/cf/ae/88/cfae886e263126f685510e2f45b82970.jpg",
       "urlVideo": "https://example.com/valorant.mp4"
     },
     {
@@ -228,65 +228,24 @@
         11
       ],
       "precio": 39.99,
-      "urlImagen": "https://i.pinimg.com/736x/12/34/56/123456789abcdef0123456789abcdef0.jpg",
+      "urlImagen": "https://i.pinimg.com/736x/65/cf/d4/65cfd49257e060f70466928d9c7d6aaf.jpg",
       "urlVideo": "https://example.com/tetris.mp4"
     },
     {
-      "id": "10",
-      "nombre": "Celeste",
-      "descripcion": "Plataformas desafiante sobre escalar una montaña mientras enfrentas tus miedos internos.",
-      "fechaLanzamiento": "2018-01-25",
-      "compania": "Maddy Makes Games",
+      "id": "79a4",
+      "nombre": "Fortnite",
+      "descripcion": "Juego de disparos",
+      "fechaLanzamiento": "2018-02-20",
+      "compania": "Epic Games",
       "plataformas": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "categorias": [
-        3,
-        8
-      ],
-      "precio": 19.99,
-      "urlImagen": "https://i.pinimg.com/736x/fe/dc/ba/fedcba9876543210fedcba9876543210.jpg",
-      "urlVideo": "https://example.com/celeste.mp4"
-    },
-    {
-      "id": "11",
-      "nombre": "Duolingo",
-      "descripcion": "Aplicación educativa para aprender idiomas de forma divertida y gamificada.",
-      "fechaLanzamiento": "2011-11-30",
-      "compania": "Duolingo Inc",
-      "plataformas": [
-        5,
-        6
-      ],
-      "categorias": [
-        10,
-        11
-      ],
-      "precio": 0,
-      "urlImagen": "https://i.pinimg.com/736x/98/76/54/987654321098765432109876543210ab.jpg",
-      "urlVideo": "https://example.com/duolingo.mp4"
-    },
-    {
-      "id": "12",
-      "nombre": "Overwatch 2",
-      "descripcion": "Shooter de héroes en equipos de 5v5 con personajes únicos y habilidades especiales.",
-      "fechaLanzamiento": "2022-10-04",
-      "compania": "Blizzard",
-      "plataformas": [
-        1,
-        2,
-        3,
-        4
+        1
       ],
       "categorias": [
         4
       ],
       "precio": 0,
-      "urlImagen": "https://i.pinimg.com/736x/11/22/33/112233445566778899aabbccddeeff00.jpg",
-      "urlVideo": "https://example.com/overwatch2.mp4"
+      "urlImagen": "https://i.pinimg.com/736x/4b/ab/34/4bab34086b84ee2a0e1b66b1e82ed0be.jpg",
+      "urlVideo": "https://i.pinimg.com/736x/4b/ab/34/4bab34086b84ee2a0e1b66b1e82ed0be.jpg"
     }
   ]
 }

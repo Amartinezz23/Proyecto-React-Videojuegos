@@ -1,0 +1,73 @@
+/* ===== FOOTER ===== */
+
+.app-footer {
+  margin-top: 4rem;
+  padding: 2rem 1rem;
+
+  background: linear-gradient(
+    180deg,
+    rgba(20, 24, 45, 0.6),
+    rgba(10, 14, 26, 0.9)
+  );
+
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  color: var(--text-muted);
+}
+
+/* Título */
+.footer-title {
+  font-weight: 800;
+  font-size: 1.1rem;
+  background: linear-gradient(
+    135deg,
+    var(--accent-1),
+    var(--accent-2)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Links */
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-links a {
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: var(--accent-2);
+}
+
+/* Copy */
+.footer-copy {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    justify-content: center;
+  }
+}

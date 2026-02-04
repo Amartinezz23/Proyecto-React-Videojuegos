@@ -7,6 +7,7 @@ import MenuCategoria from './MenuCategoria'
 import Detalle from './DetalleComponente'
 import MenuPlataforma from './MenuPlataforma'
 import Formulario from './Formulario'
+import Footer from './Footer'
 
 function App() {
   
@@ -124,15 +125,53 @@ function App() {
     )
 
   return (
-    <>
-      <MenuCategoria categorias={categorias} categoriasSeleccionadas={categoriasSeleccionadas} onChangeCategoria={onChangeCategoria}></MenuCategoria>
-      <MenuPlataforma plataformas={plataformas} plataformasSeleccionadas={plataformasSeleccionadas} onChangePlataforma={onChangePlataforma}></MenuPlataforma>
-      <Formulario categorias={categorias} plataformas={plataformas} onAgregarJuego={onAgregar}></Formulario>
-      <ListarVideojuegos juegos={juegosFiltrados} onClickVideojuego={clickarJuego}></ListarVideojuegos>
-      {juegoClickado && <Detalle juego={juegoClickado } onCerrar={quitarjuegoClickado} onEliminar={onEliminar}> </Detalle>}
-      
-    </>
-  )
+  <div className="app-container">
+    <header className="app-header">
+      <marquee scrollAmount="15">Videojuegos</marquee>
+    </header>
+
+    <section className="top-panel">
+      <div className="filters">
+        <MenuCategoria
+          categorias={categorias}
+          categoriasSeleccionadas={categoriasSeleccionadas}
+          onChangeCategoria={onChangeCategoria}
+        />
+        <MenuPlataforma
+          plataformas={plataformas}
+          plataformasSeleccionadas={plataformasSeleccionadas}
+          onChangePlataforma={onChangePlataforma}
+        />
+      </div>
+
+      <div className="form-panel">
+        <Formulario
+          categorias={categorias}
+          plataformas={plataformas}
+          onAgregarJuego={onAgregar}
+        />
+      </div>
+    </section>
+
+    <section className="games-section">
+      <ListarVideojuegos
+        juegos={juegosFiltrados}
+        onClickVideojuego={clickarJuego}
+      />
+    </section>
+
+    {juegoClickado && (
+      <Detalle
+        juego={juegoClickado}
+        onCerrar={quitarjuegoClickado}
+        onEliminar={onEliminar}
+      />
+    )}
+
+    <Footer></Footer>
+  </div>
+);
+
 }
 
 export default App
