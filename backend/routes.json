@@ -1,0 +1,6 @@
+{
+  "/users*": "/600/users$1",
+  "/categorias*": "/660/categorias$1",
+  "/plataformas*": "/660/plataformas$1",
+  "/videojuegos*": "/660/videojuegos$1"
+}

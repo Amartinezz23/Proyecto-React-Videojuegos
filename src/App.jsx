@@ -8,6 +8,8 @@ import Detalle from './DetalleComponente'
 import MenuPlataforma from './MenuPlataforma'
 import Formulario from './Formulario'
 import Footer from './Footer'
+import axios from 'axios';
+
 
 function App() {
   
@@ -31,34 +33,32 @@ function App() {
   }
   
     useEffect(() => {
-      fetch('http://localhost:3000/videojuegos')
-        .then(response => response.json())
-        .then(data => setVideojuegos(data));
+      axios.get('http://localhost:3000/videojuegos')
+        .then(response=>setVideojuegos(response.data))
+        
     }, []);
 
     useEffect(() => {
-      fetch('http://localhost:3000/categorias')
-        .then(response => response.json())
-        .then(data => {setCategorias(data);
-          let IDs = data.map(a=> Number(a.id))
+      axios.get('http://localhost:3000/categorias')
+        .then(response => {
+          setCategorias(response.data);
+          let IDs = response.data.map(a => Number(a.id));
           setCategoriasSeleccionadas(IDs);
-        });
+      })
       
-      
-      
-    }, []);
+}, []);
 
   
 
     useEffect(() => {
-      fetch('http://localhost:3000/plataformas')
-        .then(response => response.json())
-        .then(data => {
-          setPlataformas(data);
-          let Ids = data.map(p=> Number(p.id));
+      axios.get('http://localhost:3000/plataformas')
+        .then(response => {setPlataformas(response.data)
+          let Ids = response.data.map(a=> Number(a.id))
           setPlataformasSeleccionadas(Ids);
-    });
-    }, []);
+        })
+        
+    } ,[]);
+    
 
 
     function onChangeCategoria(id){
@@ -89,33 +89,24 @@ function App() {
 
     }
 
-    const onEliminar = async (id)=>{
-      const response = await fetch(`http://localhost:3000/videojuegos/${id}`,
-        {
-          method: 'DELETE'
-        }
-      );
-
-      setVideojuegos(videojuegos.filter(juego=>
-        juego.id!=id
-      ));
-      setJuegoClickado(null);
-      
-    }
+    const onEliminar = async (id) => {
+      try {
+        await axios.delete(`http://localhost:3000/videojuegos/${id}`);
+        setVideojuegos(videojuegos.filter(juego => juego.id !== id));
+        setJuegoClickado(null);
+      } catch (error) {
+        console.error("Error al eliminar:", error);
+      }
+    };
 
     const onAgregar = async (juego) => {
-      const response = await fetch(`http://localhost:3000/videojuegos`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-          },
-        body: JSON.stringify(juego)
-      });
-
-      const data = await response.json();
-  
-      setVideojuegos([...videojuegos, data]);
-    }
+      try {
+        const response = await axios.post('http://localhost:3000/videojuegos', juego);
+        setVideojuegos([...videojuegos, response.data]);
+      } catch (error) {
+        console.error("Error al agregar juego:", error);
+      }
+    };
 
     let juegosFiltradosCategorias = videojuegos.filter(juego=>
       juego.categorias.every(id=>categoriasSeleccionadas.includes(id))

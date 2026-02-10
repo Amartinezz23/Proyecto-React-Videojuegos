@@ -114,25 +114,6 @@
       "urlVideo": "https://example.com/eldenring.mp4"
     },
     {
-      "id": "3",
-      "nombre": "Street Fighter 6",
-      "descripcion": "El legendario juego de lucha regresa con gráficos renovados y nuevos personajes.",
-      "fechaLanzamiento": "2023-06-02",
-      "compania": "Capcom",
-      "plataformas": [
-        1,
-        2,
-        3
-      ],
-      "categorias": [
-        1,
-        2
-      ],
-      "precio": 69.99,
-      "urlImagen": "https://i.pinimg.com/736x/b6/17/2c/b6172c7897258e1dbcbb75c645316eb1.jpg",
-      "urlVideo": "https://example.com/sf6.mp4"
-    },
-    {
       "id": "4",
       "nombre": "Stardew Valley",
       "descripcion": "Simulador de granja donde cultivas la tierra, crías animales y construyes relaciones con los habitantes del pueblo.",
@@ -176,26 +157,6 @@
       "urlVideo": "https://example.com/minecraft.mp4"
     },
     {
-      "id": "6",
-      "nombre": "Civilization VI",
-      "descripcion": "Juego de estrategia por turnos en el que el jugador lidera una civilización desde la antigüedad hasta el futuro, tomando decisiones políticas, militares, científicas y culturales.",
-      "fechaLanzamiento": "2016-10-21",
-      "compania": "Firaxis Games",
-      "plataformas": [
-        1,
-        4,
-        5,
-        6
-      ],
-      "categorias": [
-        5,
-        6
-      ],
-      "precio": 49.99,
-      "urlImagen": "https://i.pinimg.com/736x/12/14/9f/12149f30f87fac7da375322426da6d03.jpg",
-      "urlVideo": "https://example.com/civ6.mp4"
-    },
-    {
       "id": "7",
       "nombre": "Valorant",
       "descripcion": "Shooter táctico en primera persona 5v5 con habilidades únicas por personaje.",
@@ -210,26 +171,6 @@
       "precio": 0,
       "urlImagen": "https://i.pinimg.com/1200x/cf/ae/88/cfae886e263126f685510e2f45b82970.jpg",
       "urlVideo": "https://example.com/valorant.mp4"
-    },
-    {
-      "id": "9",
-      "nombre": "Tetris Effect",
-      "descripcion": "El clásico Tetris reimaginado con efectos visuales y musicales hipnóticos.",
-      "fechaLanzamiento": "2018-11-09",
-      "compania": "Enhance Games",
-      "plataformas": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "categorias": [
-        2,
-        11
-      ],
-      "precio": 39.99,
-      "urlImagen": "https://i.pinimg.com/736x/65/cf/d4/65cfd49257e060f70466928d9c7d6aaf.jpg",
-      "urlVideo": "https://example.com/tetris.mp4"
     },
     {
       "id": "79a4",
