@@ -1,0 +1,130 @@
+#root {
+  width: 100%;
+  padding: 0;
+}
+
+.app-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Header con título principal */
+h1 {
+  font-size: 4rem;
+  font-weight: 900;
+  text-align: center;
+  margin: 3rem 0;
+  background: linear-gradient(
+    135deg,
+    var(--accent-1) 0%,
+    var(--accent-2) 25%,
+    var(--accent-3) 50%,
+    var(--accent-4) 75%,
+    var(--accent-1) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+  animation: gradientShift 8s ease infinite;
+  text-shadow: 0 0 80px rgba(127, 124, 255, 0.5);
+}
+
+marquee {
+  color: #646cffaa;
+  font-size: 5rem;        /* tamaño grande */
+  font-weight: 900;
+  padding: 2rem 0;
+  letter-spacing: -0.03em;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  .app-container {
+    padding: 1rem;
+  }
+}
+
+/* ===== LAYOUT GENERAL ===== */
+
+.app-header {
+  margin-bottom: 3rem;
+}
+
+/* Panel superior: filtros + formulario */
+.top-panel {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+/* Filtros */
+.filters {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Formulario */
+.form-panel {
+  backdrop-filter: blur(12px);
+}
+
+/* Lista de juegos */
+.games-section {
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .top-panel {
+    grid-template-columns: 1fr;
+  }
+}
