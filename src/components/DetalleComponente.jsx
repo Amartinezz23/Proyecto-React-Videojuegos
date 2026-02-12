@@ -1,45 +1,80 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./Detalle.css";
 
-const Detalle = ({juego, onCerrar, onEliminar}) => {
-    return(
-        <div className="modal-overlay" onClick={onCerrar}>
-            <div className="modal-container" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close" onClick={onCerrar}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
+const Detalle = ({ juego, onCerrar, onEliminar, esPropio }) => {
+
+    // Disable body scroll when modal is open
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, []);
+
+    if (!juego) return null;
+
+    return (
+        <div className="detalle-overlay" onClick={onCerrar}>
+            <div className="detalle-container" onClick={(e) => e.stopPropagation()}>
+                <button className="btn-cerrar" onClick={onCerrar}>
+                    &times;
                 </button>
 
-                <div className="modal-content">
-                    <div className="modal-image-container">
-                        <img 
-                            src={juego.urlImagen} 
+                <div className="detalle-media">
+                    {juego.urlVideo ? (
+                        <video
+                            className="detalle-video"
+                            src={juego.urlVideo}
+                            controls
+                            autoPlay
+                            muted
+                            loop
+                            poster={juego.urlImagen}
+                        >
+                            Tu navegador no soporta video.
+                        </video>
+                    ) : (
+                        <img
+                            src={juego.urlImagen}
                             alt={juego.nombre}
-                            className="modal-image"
+                            className="detalle-img"
                         />
-                        <div className="modal-image-overlay"></div>
-                    </div>
+                    )}
+                </div>
 
-                    <div className="modal-body">
-                        <div className="modal-header">
-                            <h1 className="modal-title">{juego.nombre}</h1>
-                            <div className="modal-price">
-                                <span className="price-label">Precio</span>
-                                <span className="price-value">${juego.precio}</span>
+                <div className="detalle-info">
+                    <div>
+                        <h1 className="detalle-titulo">{juego.nombre}</h1>
+                        <div className="detalle-meta" style={{ marginTop: '15px' }}>
+                            <div className="detalle-chip">
+                                <span>🏢</span> {juego.compania}
                             </div>
-                        </div>
-
-                        <div className="modal-description">
-                            <h3>Descripción</h3>
-                            <p>{juego.descripcion}</p>
-                        </div>
-
-                        <div className="modal-eliminar">
-                            <h4>Eliminar Juego</h4>
-                            <button onClick={()=> onEliminar(juego.id)}>Eliminar juego</button>
+                            <div className="detalle-chip">
+                                <span>📅</span> {juego.fechaLanzamiento}
+                            </div>
+                            {juego.username && (
+                                <div className="detalle-chip">
+                                    <span>👤</span> Subido por: {juego.username}
+                                </div>
+                            )}
                         </div>
                     </div>
+
+                    <div className="detalle-descripcion">
+                        {juego.descripcion}
+                    </div>
+
+                    <div className="detalle-precio">
+                        {Number(juego.precio) === 0 ? "FREE" : `${juego.precio}€`}
+                    </div>
+
+                    {esPropio && (
+                        <div className="detalle-actions">
+                            <button className="btn-eliminar" onClick={() => onEliminar(juego.id)}>
+                                Eliminar Videojuego
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

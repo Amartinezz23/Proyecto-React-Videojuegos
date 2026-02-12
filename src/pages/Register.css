@@ -1,34 +1,93 @@
+/* REGISTER PAGE - PREMIUM GLASSMORPHISM THEME */
+
 .register-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: radial-gradient(circle at bottom right, #2b1055, #24243e, #0f0c29);
   padding: 20px;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Ambient Background Effects */
+.register-container::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #00f260, transparent 70%);
+  /* Vibrant Green accent */
+  opacity: 0.15;
+  filter: blur(90px);
+  z-index: 0;
+  animation: pulseGlow 12s infinite alternate ease-in-out;
+}
+
+.register-container::after {
+  content: '';
+  position: absolute;
+  bottom: -150px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #0575e6, transparent 70%);
+  /* Deep Blue accent */
+  opacity: 0.2;
+  filter: blur(80px);
+  z-index: 0;
+}
+
+@keyframes pulseGlow {
+  0% {
+    opacity: 0.1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0.25;
+    transform: scale(1.1);
+  }
 }
 
 .register-card {
-  background: white;
-  border-radius: 20px;
-  padding: 40px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 450px;
+  background: rgba(255, 255, 255, 0.05);
+  /* Ultra subtle glass */
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 50px 40px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  max-width: 460px;
   width: 100%;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 .register-logo {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 20px;
-  animation: fadeIn 0.5s ease-in;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 25px;
+  filter: drop-shadow(0 0 15px rgba(5, 117, 230, 0.4));
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.register-logo:hover {
+  transform: rotate(15deg) scale(1.1);
 }
 
 .register-title {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 30px;
-  font-weight: 600;
+  font-size: 2.2rem;
+  color: #fff;
+  margin-bottom: 35px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 }
 
 .register-form {
@@ -37,93 +96,122 @@
   gap: 20px;
 }
 
-.form-group {
+.register-input-group {
   width: 100%;
 }
 
-.form-input {
+.register-input-field {
   width: 100%;
-  padding: 15px;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
+  padding: 16px 20px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  color: #fff !important;
   outline: none;
-  color: #000;
-
+  transition: all 0.3s ease;
 }
 
-.form-input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+.register-input-field::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.register-input-field:focus {
+  background: rgba(0, 0, 0, 0.4);
+  border-color: #0575e6;
+  box-shadow: 0 0 0 4px rgba(5, 117, 230, 0.2);
+  transform: translateY(-2px);
 }
 
 .register-button {
   width: 100%;
-  padding: 15px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 16px;
+  background: linear-gradient(135deg, #00f260 0%, #0575e6 100%);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 10px;
+  margin-top: 15px;
+  box-shadow: 0 4px 15px rgba(5, 117, 230, 0.4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .register-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 10px 30px rgba(5, 117, 230, 0.5);
+  background: linear-gradient(135deg, #0575e6 0%, #00f260 100%);
 }
 
 .register-button:active {
-  transform: translateY(0);
+  transform: translateY(1px);
 }
 
 .error-message {
-  color: #e74c3c;
-  background: #fadbd8;
-  padding: 10px;
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 12px;
   border-radius: 8px;
   font-size: 0.9rem;
+  border: 1px solid rgba(255, 107, 107, 0.2);
   margin-top: 10px;
-  animation: shake 0.3s ease;
+  animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both;
 }
 
 .success-message {
-  color: #27ae60;
-  background: #d5f4e6;
-  padding: 10px;
+  color: #00f260;
+  background: rgba(0, 242, 96, 0.1);
+  padding: 12px;
   border-radius: 8px;
   font-size: 0.9rem;
+  border: 1px solid rgba(0, 242, 96, 0.2);
   margin-top: 10px;
-  animation: fadeIn 0.3s ease;
+  animation: fadeIn 0.5s ease;
+  font-weight: 600;
 }
 
 .login-link {
-  margin-top: 20px;
-  color: #666;
+  margin-top: 25px;
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.95rem;
 }
 
 .login-link a {
-  color: #667eea;
+  color: #00f260;
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
+  position: relative;
+}
+
+.login-link a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #00f260;
+  transition: width 0.3s ease;
+}
+
+.login-link a:hover::after {
+  width: 100%;
 }
 
 .login-link a:hover {
-  color: #764ba2;
-  text-decoration: underline;
+  color: #5aff9d;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+    transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -131,9 +219,27 @@
 }
 
 @keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-5px); }
-  75% { transform: translateX(5px); }
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 
 /* RESPONSIVE */
@@ -143,11 +249,6 @@
   }
 
   .register-title {
-    font-size: 1.6rem;
-  }
-
-  .register-logo {
-    width: 80px;
-    height: 80px;
+    font-size: 1.8rem;
   }
 }
