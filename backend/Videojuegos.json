@@ -95,25 +95,6 @@
       "urlVideo": "https://example.com/zelda.mp4"
     },
     {
-      "id": "2",
-      "nombre": "Elden Ring",
-      "descripcion": "RPG de acción en un vasto mundo abierto creado por FromSoftware y George R.R. Martin.",
-      "fechaLanzamiento": "2022-02-25",
-      "compania": "FromSoftware",
-      "plataformas": [
-        1,
-        2,
-        3
-      ],
-      "categorias": [
-        8,
-        9
-      ],
-      "precio": 59.99,
-      "urlImagen": "https://i.pinimg.com/736x/24/2f/a4/242fa41f5955c45b5dbd0284cb1e1275.jpg",
-      "urlVideo": "https://example.com/eldenring.mp4"
-    },
-    {
       "id": "4",
       "nombre": "Stardew Valley",
       "descripcion": "Simulador de granja donde cultivas la tierra, crías animales y construyes relaciones con los habitantes del pueblo.",
@@ -188,5 +169,6 @@
       "urlImagen": "https://i.pinimg.com/736x/4b/ab/34/4bab34086b84ee2a0e1b66b1e82ed0be.jpg",
       "urlVideo": "https://i.pinimg.com/736x/4b/ab/34/4bab34086b84ee2a0e1b66b1e82ed0be.jpg"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

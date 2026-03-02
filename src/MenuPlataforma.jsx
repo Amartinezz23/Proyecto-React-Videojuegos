@@ -1,26 +1,35 @@
-import React from "react";
-import './Menus.css'
+import { Box, Typography, Chip, Stack } from "@mui/material";
+import DevicesIcon from '@mui/icons-material/Devices';
 
 const MenuPlataforma = ({ plataformas, plataformasSeleccionadas, onChangePlataforma }) => {
   return (
-    <div className="menu-container">
-      <h2 className="menu-title">Plataformas</h2>
-      <div className="menu-list">
-        {plataformas.map((plataforma) => (
-          <div key={plataforma.id} className="menu-item">
-            <label className="menu-label">
-              <input
-                type="checkbox"
-                className="menu-checkbox"
-                checked={plataformasSeleccionadas.includes(Number(plataforma.id))}
-                onChange={() => onChangePlataforma(Number(plataforma.id))}
-              />
-              {plataforma.nombre}
-            </label>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Box sx={{ mb: 4 }}>
+      <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'white' }}>
+        <DevicesIcon fontSize="small" color="primary" /> Platforms
+      </Typography>
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
+        {plataformas.map((plataforma) => {
+          const isSelected = plataformasSeleccionadas.includes(Number(plataforma.id));
+          return (
+            <Chip
+              key={plataforma.id}
+              label={plataforma.nombre}
+              onClick={() => onChangePlataforma(Number(plataforma.id))}
+              color={isSelected ? "secondary" : "default"}
+              variant={isSelected ? "filled" : "outlined"}
+              sx={{
+                mb: 1,
+                borderColor: isSelected ? 'transparent' : 'rgba(255,255,255,0.2)',
+                color: isSelected ? 'white' : 'rgba(255,255,255,0.7)',
+                '&:hover': {
+                  borderColor: '#3a7bd5',
+                }
+              }}
+            />
+          );
+        })}
+      </Stack>
+    </Box>
   );
 };
 

@@ -1,168 +1,134 @@
-import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useMemo } from 'react'
+import { Routes, Route, useNavigate } from 'react-router-dom'
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  Box,
+  Container,
+  Typography
+} from '@mui/material'
 import './App.css'
-import ListarVideojuegos from './ListarVideojuegos'
-import MenuCategoria from './MenuCategoria'
-import Detalle from './DetalleComponente'
-import MenuPlataforma from './MenuPlataforma'
-import Formulario from './Formulario'
+import { useAuth } from './AuthContext'
+import Navbar from './Navbar'
+import Login from './Login'
+import Register from './Register'
+import HomePage from './HomePage'
+import MyGamesPage from './MyGamesPage'
+import AddGamePage from './AddGamePage'
+import DetailPage from './DetailPage'
 import Footer from './Footer'
-import axios from 'axios';
-
 
 function App() {
-  
-  const [videojuegos, setVideojuegos] = useState([]);
-  const [categorias, setCategorias] = useState([]);
-  const [plataformas, setPlataformas] = useState([]);
+  const { user } = useAuth();
+  const [showRegister, setShowRegister] = useState(false);
+  const navigate = useNavigate();
 
-  const[juegoClickado, setJuegoClickado] = useState(null);
+  const theme = useMemo(() => createTheme({
+    palette: {
+      mode: 'dark',
+      primary: {
+        main: '#00d2ff',
+      },
+      secondary: {
+        main: '#3a7bd5',
+      },
+      background: {
+        default: '#0f0c29',
+        paper: 'rgba(255, 255, 255, 0.05)',
+      },
+    },
+    typography: {
+      fontFamily: '"Outfit", "Roboto", "Helvetica", "Arial", sans-serif',
+      h1: {
+        fontWeight: 800,
+      },
+      h6: {
+        fontWeight: 700,
+      }
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: '12px',
+            textTransform: 'none',
+            fontWeight: 600,
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+          },
+        },
+      },
+    },
+  }), []);
 
-  const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
-  const [plataformasSeleccionadas, setPlataformasSeleccionadas] = useState([]);
-
-
-  function clickarJuego (juego){
-      setJuegoClickado(juego);
+  if (!user) {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            p: 3,
+            background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)'
+          }}
+        >
+          <Typography variant="h3" gutterBottom sx={{
+            fontWeight: '900',
+            background: 'linear-gradient(45deg, #fff, #00d2ff)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            mb: 4
+          }}>
+            Video Games Community
+          </Typography>
+          {showRegister ? (
+            <Register onSwitch={() => setShowRegister(false)} />
+          ) : (
+            <Login onSwitch={() => setShowRegister(true)} />
+          )}
+        </Box>
+      </ThemeProvider>
+    );
   }
 
-  function quitarjuegoClickado (){
-    let juego = null;  
-    setJuegoClickado(juego);
-  }
-  
-    useEffect(() => {
-      axios.get('http://localhost:3000/videojuegos')
-        .then(response=>setVideojuegos(response.data))
-        
-    }, []);
-
-    useEffect(() => {
-      axios.get('http://localhost:3000/categorias')
-        .then(response => {
-          setCategorias(response.data);
-          let IDs = response.data.map(a => Number(a.id));
-          setCategoriasSeleccionadas(IDs);
-      })
-      
-}, []);
-
-  
-
-    useEffect(() => {
-      axios.get('http://localhost:3000/plataformas')
-        .then(response => {setPlataformas(response.data)
-          let Ids = response.data.map(a=> Number(a.id))
-          setPlataformasSeleccionadas(Ids);
-        })
-        
-    } ,[]);
-    
-
-
-    function onChangeCategoria(id){
-      if(categoriasSeleccionadas.includes(id)){
-        let arrayNuevo = categoriasSeleccionadas.filter((categoria , indice)=>(
-          categoria !== id
-        ));
-        setCategoriasSeleccionadas(arrayNuevo);
-        
-      }else{
-        let array = [...categoriasSeleccionadas, id];
-        setCategoriasSeleccionadas(array);
-      }
-
-    }
-
-    function onChangePlataforma(id){
-      if(plataformasSeleccionadas.includes(id)){
-        let arrayNuevo = plataformasSeleccionadas.filter((plataforma , indice)=>(
-          plataforma !== id
-        ));
-        setPlataformasSeleccionadas(arrayNuevo);
-        
-      }else{
-        let array = [...plataformasSeleccionadas, id];
-        setPlataformasSeleccionadas(array);
-      }
-
-    }
-
-    const onEliminar = async (id) => {
-      try {
-        await axios.delete(`http://localhost:3000/videojuegos/${id}`);
-        setVideojuegos(videojuegos.filter(juego => juego.id !== id));
-        setJuegoClickado(null);
-      } catch (error) {
-        console.error("Error al eliminar:", error);
-      }
-    };
-
-    const onAgregar = async (juego) => {
-      try {
-        const response = await axios.post('http://localhost:3000/videojuegos', juego);
-        setVideojuegos([...videojuegos, response.data]);
-      } catch (error) {
-        console.error("Error al agregar juego:", error);
-      }
-    };
-
-    let juegosFiltradosCategorias = videojuegos.filter(juego=>
-      juego.categorias.every(id=>categoriasSeleccionadas.includes(id))
-    )
-    let juegosFiltrados = juegosFiltradosCategorias.filter(juego=>
-      juego.plataformas.every(id=>plataformasSeleccionadas.includes(id))
-    )
+  const handleGameClick = (juego) => {
+    navigate(`/detalle/${juego.id}`);
+  };
 
   return (
-  <div className="app-container">
-    <header className="app-header">
-      <marquee scrollAmount="15">Videojuegos</marquee>
-    </header>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        background: 'linear-gradient(to bottom, #0f0c29, #302b63, #24243e)'
+      }}>
+        <Navbar />
 
-    <section className="top-panel">
-      <div className="filters">
-        <MenuCategoria
-          categorias={categorias}
-          categoriasSeleccionadas={categoriasSeleccionadas}
-          onChangeCategoria={onChangeCategoria}
-        />
-        <MenuPlataforma
-          plataformas={plataformas}
-          plataformasSeleccionadas={plataformasSeleccionadas}
-          onChangePlataforma={onChangePlataforma}
-        />
-      </div>
+        <Container component="main" maxWidth="xl" sx={{ flex: 1, py: 6 }}>
+          <Routes>
+            <Route path="/" element={<HomePage onClickVideojuego={handleGameClick} />} />
+            <Route path="/mis-juegos" element={<MyGamesPage onClickVideojuego={handleGameClick} />} />
+            <Route path="/nuevo" element={<AddGamePage />} />
+            <Route path="/detalle/:id" element={<DetailPage />} />
+          </Routes>
+        </Container>
 
-      <div className="form-panel">
-        <Formulario
-          categorias={categorias}
-          plataformas={plataformas}
-          onAgregarJuego={onAgregar}
-        />
-      </div>
-    </section>
-
-    <section className="games-section">
-      <ListarVideojuegos
-        juegos={juegosFiltrados}
-        onClickVideojuego={clickarJuego}
-      />
-    </section>
-
-    {juegoClickado && (
-      <Detalle
-        juego={juegoClickado}
-        onCerrar={quitarjuegoClickado}
-        onEliminar={onEliminar}
-      />
-    )}
-
-    <Footer></Footer>
-  </div>
-);
-
+        <Footer />
+      </Box>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;

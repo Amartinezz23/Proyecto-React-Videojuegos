@@ -1,26 +1,35 @@
-import React from "react";
-import './Menus.css'
+import { Box, Typography, Chip, Stack } from "@mui/material";
+import CategoryIcon from '@mui/icons-material/Category';
 
 const MenuCategoria = ({ categorias, categoriasSeleccionadas, onChangeCategoria }) => {
   return (
-    <div className="menu-container">
-      <h2 className="menu-title">Categorías</h2>
-      <div className="menu-list">
-        {categorias.map((categoria) => (
-          <div key={categoria.id} className="menu-item">
-            <label className="menu-label">
-              <input
-                type="checkbox"
-                className="menu-checkbox"
-                checked={categoriasSeleccionadas.includes(Number(categoria.id))}
-                onChange={() => onChangeCategoria(Number(categoria.id))}
-              />
-              {categoria.nombre}
-            </label>
-          </div>
-        ))}
-      </div>
-    </div>
+    <Box sx={{ mb: 4 }}>
+      <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'white' }}>
+        <CategoryIcon fontSize="small" color="primary" /> Categories
+      </Typography>
+      <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
+        {categorias.map((categoria) => {
+          const isSelected = categoriasSeleccionadas.includes(Number(categoria.id));
+          return (
+            <Chip
+              key={categoria.id}
+              label={categoria.nombre}
+              onClick={() => onChangeCategoria(Number(categoria.id))}
+              color={isSelected ? "primary" : "default"}
+              variant={isSelected ? "filled" : "outlined"}
+              sx={{
+                mb: 1,
+                borderColor: isSelected ? 'transparent' : 'rgba(255,255,255,0.2)',
+                color: isSelected ? 'white' : 'rgba(255,255,255,0.7)',
+                '&:hover': {
+                  borderColor: '#00d2ff',
+                }
+              }}
+            />
+          );
+        })}
+      </Stack>
+    </Box>
   );
 };
 
