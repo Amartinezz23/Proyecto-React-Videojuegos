@@ -9,6 +9,8 @@ import {
   Box
 } from '@mui/material';
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 
 const ListarVideojuegos = ({ juegos, onClickVideojuego }) => {
   return (
@@ -55,9 +57,20 @@ const ListarVideojuegos = ({ juegos, onClickVideojuego }) => {
                   </Typography>
                 </Box>
 
-                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', mb: 2 }}>
+                <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', mb: 1 }}>
                   {juego.compania}
                 </Typography>
+
+                <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#4caf50' }}>
+                    <ThumbUpIcon fontSize="small" />
+                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{juego.likes || 0}</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: '#f44336' }}>
+                    <ThumbDownIcon fontSize="small" />
+                    <Typography variant="body2" sx={{ fontWeight: 'bold' }}>{juego.dislikes || 0}</Typography>
+                  </Box>
+                </Box>
 
                 <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                   {juego.isGeneric && (

@@ -28,19 +28,20 @@ const HomePage = ({ onClickVideojuego }) => {
     const [plataformasSeleccionadas, setPlataformasSeleccionadas] = useState([]);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(8); // Default to 8 for better grid
+    const [sort, setSort] = useState('id');
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchData();
-    }, [token, page, limit]);
+    }, [token, page, limit, sort]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
             const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-            const params = { page, limit };
+            const params = { page, limit, sort };
 
             const [dataResponses] = await Promise.all([
                 Promise.all([
@@ -91,6 +92,11 @@ const HomePage = ({ onClickVideojuego }) => {
         setPage(1);
     };
 
+    const handleSortChange = (event) => {
+        setSort(event.target.value);
+        setPage(1);
+    };
+
     return (
         <Box>
             <Box sx={{ mb: 6, textAlign: 'center' }}>
@@ -126,7 +132,26 @@ const HomePage = ({ onClickVideojuego }) => {
                     />
                 </Box>
 
-                <Box sx={{ minWidth: 200 }}>
+                <Box sx={{ minWidth: 200, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <FormControl fullWidth size="small" sx={{
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '8px',
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' }
+                    }}>
+                        <InputLabel sx={{ color: 'rgba(255,255,255,0.7)' }}>Sort By</InputLabel>
+                        <Select
+                            value={sort}
+                            label="Sort By"
+                            onChange={handleSortChange}
+                            sx={{ color: '#fff' }}
+                        >
+                            <MenuItem value="id">Latest</MenuItem>
+                            <MenuItem value="nombre">Name</MenuItem>
+                            <MenuItem value="precio">Price</MenuItem>
+                            <MenuItem value="popularity">Popularity</MenuItem>
+                        </Select>
+                    </FormControl>
+
                     <FormControl fullWidth size="small" sx={{
                         background: 'rgba(255,255,255,0.05)',
                         borderRadius: '8px',

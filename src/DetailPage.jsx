@@ -17,6 +17,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import BusinessIcon from '@mui/icons-material/Business';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+import FlagIcon from '@mui/icons-material/Flag';
 import Loading from './Loading';
 import { useAuth } from './AuthContext';
 
@@ -28,22 +31,30 @@ const DetailPage = () => {
     const { token, user } = useAuth();
     const [juego, setJuego] = useState(null);
 
+    const fetchJuego = async () => {
+        try {
+            const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+            const response = await axios.get(`${API_URL}/videojuegos/${id}`, config);
+            setJuego(response.data);
+        } catch (error) {
+            console.error("Error fetching game detail:", error);
+        }
+    };
+
     useEffect(() => {
-        const fetchJuego = async () => {
-            try {
-                const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
-                const [response] = await Promise.all([
-                    axios.get(`${API_URL}/videojuegos`, config),
-                    new Promise(resolve => setTimeout(resolve, 4000)) // Force 4s
-                ]);
-                const found = response.data.find(j => j.id.toString() === id);
-                setJuego(found);
-            } catch (error) {
-                console.error("Error fetching game detail:", error);
-            }
-        };
         fetchJuego();
     }, [id, token]);
+
+    const handleVote = async (valor) => {
+        try {
+            await axios.post(`${API_URL}/videojuegos/${id}/votar`, { valor }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchJuego(); // Refresh data
+        } catch (error) {
+            alert(error.response?.data?.error || "Error voting");
+        }
+    };
 
     const handleEliminar = async () => {
         if (!window.confirm("Are you sure you want to delete/hide this game?")) return;
@@ -110,9 +121,40 @@ const DetailPage = () => {
                                 </Stack>
                             </Box>
 
-                            <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 700 }}>
-                                {juego.precio} €
-                            </Typography>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Typography variant="h4" sx={{ color: 'primary.main', fontWeight: 700 }}>
+                                    {juego.precio} €
+                                </Typography>
+
+                                <Stack direction="row" spacing={2}>
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<ThumbUpIcon />}
+                                        onClick={() => handleVote('like')}
+                                        sx={{
+                                            borderRadius: '20px',
+                                            color: '#4caf50',
+                                            borderColor: 'rgba(76, 175, 80, 0.3)',
+                                            '&:hover': { borderColor: '#4caf50', background: 'rgba(76, 175, 80, 0.1)' }
+                                        }}
+                                    >
+                                        {juego.likes || 0}
+                                    </Button>
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<ThumbDownIcon />}
+                                        onClick={() => handleVote('dislike')}
+                                        sx={{
+                                            borderRadius: '20px',
+                                            color: '#f44336',
+                                            borderColor: 'rgba(244, 67, 54, 0.3)',
+                                            '&:hover': { borderColor: '#f44336', background: 'rgba(244, 67, 54, 0.1)' }
+                                        }}
+                                    >
+                                        {juego.dislikes || 0}
+                                    </Button>
+                                </Stack>
+                            </Box>
 
                             <Divider sx={{ borderColor: 'rgba(255,255,255,0.1)' }} />
 

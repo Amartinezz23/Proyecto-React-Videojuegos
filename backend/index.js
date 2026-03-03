@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame } = require('./db');
+const { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto } = require('./db');
 const { Op } = require('sequelize');
 const { auth, isAdmin } = require('./middleware/auth');
 
@@ -77,17 +77,85 @@ app.get('/api/videojuegos', async (req, res) => {
 
         const { count, rows } = await Videojuego.findAndCountAll({
             where,
-            include: [{ model: User, as: 'user', attributes: ['username'] }],
+            include: [
+                { model: User, as: 'user', attributes: ['username'] },
+                { model: Voto, as: 'votos', attributes: ['valor'] }
+            ],
+            distinct: true,
             limit: parseInt(limit),
             offset: parseInt(offset),
-            order: [[sort === 'popularity' ? 'id' : sort, 'DESC']] // Temporary: popularity logic will be refined in next iteration
+            order: [[sort === 'popularity' ? 'id' : sort, 'DESC']]
         });
 
+        const gamesWithVotes = rows.map(game => {
+            const plainGame = game.get({ plain: true });
+            const likesCount = (plainGame.votos || []).filter(v => v.valor === 'like').length;
+            const dislikesCount = (plainGame.votos || []).filter(v => v.valor === 'dislike').length;
+            return {
+                ...plainGame,
+                likes: likesCount,
+                dislikes: dislikesCount,
+                popularity: likesCount - dislikesCount
+            };
+        });
+
+        if (sort === 'popularity') {
+            gamesWithVotes.sort((a, b) => b.popularity - a.popularity);
+        }
+
         res.json({
-            data: rows,
+            data: gamesWithVotes,
             totalItems: count,
             totalPages: Math.ceil(count / limit),
             currentPage: parseInt(page)
+        });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Voting Route
+app.post('/api/videojuegos/:id/votar', auth, async (req, res) => {
+    try {
+        const { valor } = req.body;
+        if (!['like', 'dislike'].includes(valor)) {
+            return res.status(400).json({ error: 'Invalid vote value' });
+        }
+
+        const [voto, created] = await Voto.findOrCreate({
+            where: { UserId: req.user.id, VideojuegoId: req.params.id },
+            defaults: { valor }
+        });
+
+        if (!created) {
+            await voto.update({ valor });
+        }
+
+        res.json({ message: 'Vote registered', voto });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/videojuegos/:id', async (req, res) => {
+    try {
+        const game = await Videojuego.findByPk(req.params.id, {
+            include: [
+                { model: User, as: 'user', attributes: ['username'] },
+                { model: Voto, as: 'votos', attributes: ['valor'] }
+            ]
+        });
+        if (!game) return res.status(404).json({ error: 'Game not found' });
+
+        const plainGame = game.get({ plain: true });
+        const likesCount = (plainGame.votos || []).filter(v => v.valor === 'like').length;
+        const dislikesCount = (plainGame.votos || []).filter(v => v.valor === 'dislike').length;
+
+        res.json({
+            ...plainGame,
+            likes: likesCount,
+            dislikes: dislikesCount,
+            popularity: likesCount - dislikesCount
         });
     } catch (error) {
         res.status(500).json({ error: error.message });

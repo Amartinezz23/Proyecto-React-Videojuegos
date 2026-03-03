@@ -67,6 +67,22 @@ const HiddenGame = sequelize.define('HiddenGame', {
     VideojuegoId: { type: DataTypes.INTEGER, allowNull: false }
 });
 
+const Voto = sequelize.define('Voto', {
+    UserId: { type: DataTypes.INTEGER, allowNull: false },
+    VideojuegoId: { type: DataTypes.INTEGER, allowNull: false },
+    valor: {
+        type: DataTypes.ENUM('like', 'dislike'),
+        allowNull: false
+    }
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ['UserId', 'VideojuegoId']
+        }
+    ]
+});
+
 // Relationships
 User.hasMany(Videojuego, { foreignKey: 'userId' });
 Videojuego.belongsTo(User, { foreignKey: 'userId', as: 'user' });
@@ -74,4 +90,10 @@ Videojuego.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 User.belongsToMany(Videojuego, { through: HiddenGame, foreignKey: 'UserId', as: 'hiddenVideojuegos' });
 Videojuego.belongsToMany(User, { through: HiddenGame, foreignKey: 'VideojuegoId', as: 'hidingUsers' });
 
-module.exports = { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame };
+User.hasMany(Voto, { foreignKey: 'UserId' });
+Voto.belongsTo(User, { foreignKey: 'UserId' });
+
+Videojuego.hasMany(Voto, { foreignKey: 'VideojuegoId', as: 'votos' });
+Voto.belongsTo(Videojuego, { foreignKey: 'VideojuegoId' });
+
+module.exports = { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto };
