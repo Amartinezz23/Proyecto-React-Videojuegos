@@ -65,6 +65,9 @@ app.get('/api/videojuegos', async (req, res) => {
             } catch (err) { }
         }
 
+        const { page = 1, limit = 10, sort = 'id' } = req.query;
+        const offset = (page - 1) * limit;
+
         let where = {};
         if (userId) {
             const hidden = await HiddenGame.findAll({ where: { UserId: userId } });
@@ -72,11 +75,20 @@ app.get('/api/videojuegos', async (req, res) => {
             where = { id: { [Op.notIn]: hiddenIds } };
         }
 
-        const games = await Videojuego.findAll({
+        const { count, rows } = await Videojuego.findAndCountAll({
             where,
-            include: [{ model: User, as: 'user', attributes: ['username'] }]
+            include: [{ model: User, as: 'user', attributes: ['username'] }],
+            limit: parseInt(limit),
+            offset: parseInt(offset),
+            order: [[sort === 'popularity' ? 'id' : sort, 'DESC']] // Temporary: popularity logic will be refined in next iteration
         });
-        res.json(games);
+
+        res.json({
+            data: rows,
+            totalItems: count,
+            totalPages: Math.ceil(count / limit),
+            currentPage: parseInt(page)
+        });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

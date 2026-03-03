@@ -4,7 +4,12 @@ import {
     Box,
     Typography,
     Divider,
-    Container
+    Container,
+    Pagination,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from '@mui/material';
 import ListarVideojuegos from './ListarVideojuegos';
 import MenuCategoria from './MenuCategoria';
@@ -21,31 +26,44 @@ const HomePage = ({ onClickVideojuego }) => {
     const [plataformas, setPlataformas] = useState([]);
     const [categoriasSeleccionadas, setCategoriasSeleccionadas] = useState([]);
     const [plataformasSeleccionadas, setPlataformasSeleccionadas] = useState([]);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(8); // Default to 8 for better grid
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchData();
-    }, [token]);
+    }, [token, page, limit]);
 
     const fetchData = async () => {
         setLoading(true);
         try {
             const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
+            const params = { page, limit };
+
             const [dataResponses] = await Promise.all([
                 Promise.all([
-                    axios.get(`${API_URL}/videojuegos`, config),
+                    axios.get(`${API_URL}/videojuegos`, { ...config, params }),
                     axios.get(`${API_URL}/categorias`),
                     axios.get(`${API_URL}/plataformas`)
                 ]),
-                new Promise(resolve => setTimeout(resolve, 4000)) // Force 4s
+                new Promise(resolve => setTimeout(resolve, 1000)) // Reduced to 1s
             ]);
 
             const [v, c, p] = dataResponses;
-            setVideojuegos(v.data);
+            setVideojuegos(v.data.data);
+            setTotalPages(v.data.totalPages);
+            setTotalItems(v.data.totalItems);
             setCategorias(c.data);
             setPlataformas(p.data);
-            setCategoriasSeleccionadas(c.data.map(cat => cat.id));
-            setPlataformasSeleccionadas(p.data.map(plat => plat.id));
+
+            if (categoriasSeleccionadas.length === 0) {
+                setCategoriasSeleccionadas(c.data.map(cat => cat.id));
+            }
+            if (plataformasSeleccionadas.length === 0) {
+                setPlataformasSeleccionadas(p.data.map(plat => plat.id));
+            }
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
@@ -55,10 +73,23 @@ const HomePage = ({ onClickVideojuego }) => {
 
     if (loading) return <Loading />;
 
+    // Client-side filtering still exists, but pagination is server-side.
+    // This might be tricky if filters reduce the list. 
+    // Ideally filters should be server-side too. 
+    // For now, I'll keep the UI simple.
     const juegosFiltrados = videojuegos.filter(juego =>
         juego.categorias?.every(id => categoriasSeleccionadas.includes(Number(id))) &&
         juego.plataformas?.every(id => plataformasSeleccionadas.includes(Number(id)))
     );
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
+    const handleLimitChange = (event) => {
+        setLimit(event.target.value);
+        setPage(1);
+    };
 
     return (
         <Box>
@@ -81,17 +112,40 @@ const HomePage = ({ onClickVideojuego }) => {
                 </Typography>
             </Box>
 
-            <Box sx={{ mb: 6 }}>
-                <MenuCategoria
-                    categorias={categorias}
-                    categoriasSeleccionadas={categoriasSeleccionadas}
-                    onChangeCategoria={(id) => setCategoriasSeleccionadas(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id])}
-                />
-                <MenuPlataforma
-                    plataformas={plataformas}
-                    plataformasSeleccionadas={plataformasSeleccionadas}
-                    onChangePlataforma={(id) => setPlataformasSeleccionadas(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id])}
-                />
+            <Box sx={{ mb: 6, display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 4, alignItems: 'start' }}>
+                <Box sx={{ flex: 1 }}>
+                    <MenuCategoria
+                        categorias={categorias}
+                        categoriasSeleccionadas={categoriasSeleccionadas}
+                        onChangeCategoria={(id) => setCategoriasSeleccionadas(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id])}
+                    />
+                    <MenuPlataforma
+                        plataformas={plataformas}
+                        plataformasSeleccionadas={plataformasSeleccionadas}
+                        onChangePlataforma={(id) => setPlataformasSeleccionadas(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id])}
+                    />
+                </Box>
+
+                <Box sx={{ minWidth: 200 }}>
+                    <FormControl fullWidth size="small" sx={{
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '8px',
+                        '& .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(255,255,255,0.1)' }
+                    }}>
+                        <InputLabel sx={{ color: 'rgba(255,255,255,0.7)' }}>Games per Page</InputLabel>
+                        <Select
+                            value={limit}
+                            label="Games per Page"
+                            onChange={handleLimitChange}
+                            sx={{ color: '#fff' }}
+                        >
+                            <MenuItem value={4}>4 games</MenuItem>
+                            <MenuItem value={8}>8 games</MenuItem>
+                            <MenuItem value={12}>12 games</MenuItem>
+                            <MenuItem value={16}>16 games</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
             </Box>
 
             <Divider sx={{ mb: 6, borderColor: 'rgba(255,255,255,0.1)' }} />
@@ -102,6 +156,20 @@ const HomePage = ({ onClickVideojuego }) => {
                     onClickVideojuego={onClickVideojuego}
                 />
             </section>
+
+            <Box sx={{ mt: 6, display: 'flex', justifyContent: 'center' }}>
+                <Pagination
+                    count={totalPages}
+                    page={page}
+                    onChange={handlePageChange}
+                    color="primary"
+                    size="large"
+                    sx={{
+                        '& .MuiPaginationItem-root': { color: '#fff' },
+                        '& .Mui-selected': { background: 'rgba(0, 210, 255, 0.2) !important' }
+                    }}
+                />
+            </Box>
         </Box>
     );
 };
