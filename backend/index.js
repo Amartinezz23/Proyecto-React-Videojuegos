@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto } = require('./db');
+const { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto, Comentario } = require('./db');
 const { Op } = require('sequelize');
 const { auth, isAdmin } = require('./middleware/auth');
 
@@ -142,7 +142,8 @@ app.get('/api/videojuegos/:id', async (req, res) => {
         const game = await Videojuego.findByPk(req.params.id, {
             include: [
                 { model: User, as: 'user', attributes: ['username'] },
-                { model: Voto, as: 'votos', attributes: ['valor'] }
+                { model: Voto, as: 'votos', attributes: ['valor'] },
+                { model: Comentario, as: 'comentarios', attributes: ['id'] }
             ]
         });
         if (!game) return res.status(404).json({ error: 'Game not found' });
@@ -150,13 +151,75 @@ app.get('/api/videojuegos/:id', async (req, res) => {
         const plainGame = game.get({ plain: true });
         const likesCount = (plainGame.votos || []).filter(v => v.valor === 'like').length;
         const dislikesCount = (plainGame.votos || []).filter(v => v.valor === 'dislike').length;
+        const commentsCount = (plainGame.comentarios || []).length;
 
         res.json({
             ...plainGame,
             likes: likesCount,
             dislikes: dislikesCount,
-            popularity: likesCount - dislikesCount
+            popularity: likesCount - dislikesCount,
+            commentsCount
         });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Comment Routes
+app.post('/api/videojuegos/:id/comentarios', auth, async (req, res) => {
+    try {
+        const { texto, parentId } = req.body;
+        const comentario = await Comentario.create({
+            texto,
+            parentId,
+            UserId: req.user.id,
+            VideojuegoId: req.params.id
+        });
+        res.status(201).json(comentario);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.get('/api/videojuegos/:id/comentarios', async (req, res) => {
+    try {
+        const comentarios = await Comentario.findAll({
+            where: { VideojuegoId: req.params.id, parentId: null },
+            include: [
+                { model: User, as: 'user', attributes: ['username'] },
+                {
+                    model: Comentario,
+                    as: 'replies',
+                    include: [{ model: User, as: 'user', attributes: ['username'] }]
+                }
+            ],
+            order: [['createdAt', 'DESC']]
+        });
+        res.json(comentarios);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.delete('/api/comentarios/:id', auth, async (req, res) => {
+    try {
+        const comentario = await Comentario.findByPk(req.params.id, {
+            include: [{ model: Comentario, as: 'replies' }]
+        });
+        if (!comentario) return res.status(404).json({ error: 'Comment not found' });
+
+        // Admin can delete anything. User can delete own if no replies.
+        if (req.user.role !== 'admin') {
+            if (comentario.UserId !== req.user.id) {
+                return res.status(403).json({ error: 'Unauthorized' });
+            }
+            if (comentario.replies && comentario.replies.length > 0) {
+                return res.status(400).json({ error: 'Cannot delete comment with replies' });
+            }
+        }
+
+        await comentario.destroy();
+        res.json({ message: 'Comment deleted successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

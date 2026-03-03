@@ -10,7 +10,9 @@ import {
     Stack,
     Divider,
     IconButton,
-    Chip
+    Chip,
+    TextField,
+    Avatar
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -30,6 +32,8 @@ const DetailPage = () => {
     const navigate = useNavigate();
     const { token, user } = useAuth();
     const [juego, setJuego] = useState(null);
+    const [comentarios, setComentarios] = useState([]);
+    const [nuevoComentario, setNuevoComentario] = useState('');
 
     const fetchJuego = async () => {
         try {
@@ -41,8 +45,18 @@ const DetailPage = () => {
         }
     };
 
+    const fetchComentarios = async () => {
+        try {
+            const response = await axios.get(`${API_URL}/videojuegos/${id}/comentarios`);
+            setComentarios(response.data);
+        } catch (error) {
+            console.error("Error fetching comments:", error);
+        }
+    };
+
     useEffect(() => {
         fetchJuego();
+        fetchComentarios();
     }, [id, token]);
 
     const handleVote = async (valor) => {
@@ -50,9 +64,38 @@ const DetailPage = () => {
             await axios.post(`${API_URL}/videojuegos/${id}/votar`, { valor }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            fetchJuego(); // Refresh data
+            fetchJuego();
         } catch (error) {
             alert(error.response?.data?.error || "Error voting");
+        }
+    };
+
+    const handleAddComentario = async (e) => {
+        e.preventDefault();
+        if (!nuevoComentario.trim()) return;
+        try {
+            await axios.post(`${API_URL}/videojuegos/${id}/comentarios`,
+                { texto: nuevoComentario },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            setNuevoComentario('');
+            fetchComentarios();
+            fetchJuego(); // Update count
+        } catch (error) {
+            alert(error.response?.data?.error || "Error adding comment");
+        }
+    };
+
+    const handleDeleteComentario = async (comentarioId) => {
+        if (!window.confirm("Are you sure you want to delete this comment?")) return;
+        try {
+            await axios.delete(`${API_URL}/comentarios/${comentarioId}`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            fetchComentarios();
+            fetchJuego(); // Update count
+        } catch (error) {
+            alert(error.response?.data?.error || "Error deleting comment");
         }
     };
 
@@ -194,6 +237,91 @@ const DetailPage = () => {
                     </Grid>
                 </Grid>
             </Paper>
+
+            {/* Comments Section */}
+            <Box sx={{ mt: 6 }}>
+                <Typography variant="h5" sx={{ color: 'white', mb: 4, fontWeight: 700 }}>
+                    Comments ({juego.commentsCount || 0})
+                </Typography>
+
+                <Paper sx={{
+                    p: 3,
+                    mb: 4,
+                    background: 'rgba(255,255,255,0.03)',
+                    borderRadius: '16px',
+                    border: '1px solid rgba(255,255,255,0.05)'
+                }}>
+                    <form onSubmit={handleAddComentario}>
+                        <TextField
+                            fullWidth
+                            multiline
+                            rows={3}
+                            placeholder="Share your thoughts..."
+                            value={nuevoComentario}
+                            onChange={(e) => setNuevoComentario(e.target.value)}
+                            sx={{
+                                mb: 2,
+                                '& .MuiOutlinedInput-root': {
+                                    color: 'white',
+                                    '& fieldset': { borderColor: 'rgba(255,255,255,0.1)' },
+                                    '&:hover fieldset': { borderColor: 'primary.main' },
+                                }
+                            }}
+                        />
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            disabled={!nuevoComentario.trim()}
+                            sx={{ borderRadius: '8px' }}
+                        >
+                            Post Comment
+                        </Button>
+                    </form>
+                </Paper>
+
+                <Stack spacing={3}>
+                    {comentarios.map((coment) => (
+                        <Paper key={coment.id} sx={{
+                            p: 3,
+                            background: 'rgba(255,255,255,0.02)',
+                            borderRadius: '16px',
+                            border: '1px solid rgba(255,255,255,0.05)'
+                        }}>
+                            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 2 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                    <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32, fontSize: '0.9rem' }}>
+                                        {coment.user?.username[0].toUpperCase()}
+                                    </Avatar>
+                                    <Box>
+                                        <Typography sx={{ color: 'white', fontWeight: 600 }}>{coment.user?.username}</Typography>
+                                        <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.4)' }}>
+                                            {new Date(coment.createdAt).toLocaleDateString()}
+                                        </Typography>
+                                    </Box>
+                                </Box>
+                                {(user.username === coment.user?.username || user.role === 'admin') && (
+                                    <IconButton
+                                        size="small"
+                                        color="error"
+                                        onClick={() => handleDeleteComentario(coment.id)}
+                                        sx={{ opacity: 0.5, '&:hover': { opacity: 1 } }}
+                                    >
+                                        <DeleteIcon fontSize="small" />
+                                    </IconButton>
+                                )}
+                            </Box>
+                            <Typography sx={{ color: 'rgba(255,255,255,0.8)', pl: 6 }}>
+                                {coment.texto}
+                            </Typography>
+                        </Paper>
+                    ))}
+                    {comentarios.length === 0 && (
+                        <Typography sx={{ color: 'rgba(255,255,255,0.4)', textAlign: 'center', py: 4 }}>
+                            No comments yet. Be the first to share!
+                        </Typography>
+                    )}
+                </Stack>
+            </Box>
         </Box>
     );
 };
