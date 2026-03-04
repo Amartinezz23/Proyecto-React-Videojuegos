@@ -16,6 +16,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CategoryIcon from '@mui/icons-material/Category';
 import PersonIcon from '@mui/icons-material/Person';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const Navbar = () => {
     const { user, logout } = useAuth();
@@ -84,6 +85,16 @@ const Navbar = () => {
                         >
                             New Game
                         </Button>
+                        {user.role === 'admin' && (
+                            <Button
+                                component={Link}
+                                to="/admin"
+                                startIcon={<AdminPanelSettingsIcon />}
+                                sx={{ color: '#ff9800', display: 'flex' }}
+                            >
+                                Admin
+                            </Button>
+                        )}
                     </Box>
 
                     <Box sx={{ flexGrow: 0, display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -97,7 +108,7 @@ const Navbar = () => {
                         </Box>
 
                         <Tooltip title="Logout">
-                            <IconButton onClick={handleLogout} sx={{ color: '#ff4444' }}>
+                            <IconButton onClick={handleLogout} sx={{ color: '#ff4444' }} aria-label="Logout">
                                 <LogoutIcon />
                             </IconButton>
                         </Tooltip>

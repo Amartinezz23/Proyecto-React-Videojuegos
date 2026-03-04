@@ -27,7 +27,7 @@ const Loading = () => {
                     thickness={4}
                     sx={{
                         color: '#00d2ff',
-                        animationDuration: '4s', // As requested, long duration
+                        animationDuration: '4s',
                         position: 'absolute',
                         left: 0,
                         '& .MuiCircularProgress-circle': {

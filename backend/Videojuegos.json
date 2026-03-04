@@ -168,6 +168,178 @@
       "precio": 0,
       "urlImagen": "https://i.pinimg.com/736x/4b/ab/34/4bab34086b84ee2a0e1b66b1e82ed0be.jpg",
       "urlVideo": "https://i.pinimg.com/736x/4b/ab/34/4bab34086b84ee2a0e1b66b1e82ed0be.jpg"
+    },
+    {
+      "id": "8",
+      "nombre": "Elden Ring",
+      "descripcion": "Un épico juego de acción y rol en un mundo de fantasía oscura.",
+      "fechaLanzamiento": "2022-02-25",
+      "compania": "FromSoftware",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        8,
+        9
+      ],
+      "precio": 69.99,
+      "urlImagen": "https://i.pinimg.com/1200x/cc/b6/f0/ccb6f0689bcaa9b205f6593cc6a4182c.jpg"
+    },
+    {
+      "id": "9",
+      "nombre": "Red Dead Redemption 2",
+      "descripcion": "Una historia épica de vida en el implacable corazón de América.",
+      "fechaLanzamiento": "2018-10-26",
+      "compania": "Rockstar Games",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        8
+      ],
+      "precio": 59.99,
+      "urlImagen": "https://i.pinimg.com/736x/d1/13/9b/d1139b1ee12965f315652a3eb970aa28.jpg"
+    },
+    {
+      "id": "10",
+      "nombre": "Cyberpunk 2077",
+      "descripcion": "Un RPG de acción de mundo abierto ambientado en Night City.",
+      "fechaLanzamiento": "2020-12-10",
+      "compania": "CD Projekt Red",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        8,
+        9
+      ],
+      "precio": 49.99,
+      "urlImagen": "https://i.pinimg.com/736x/14/c8/96/14c896e0730044e222018d65a338eab5.jpg"
+    },
+    {
+      "id": "11",
+      "nombre": "God of War Ragnarök",
+      "descripcion": "Kratos y Atreus deben viajar a cada uno de los Nueve Reinos en busca de respuestas.",
+      "fechaLanzamiento": "2022-11-09",
+      "compania": "Santa Monica Studio",
+      "plataformas": [
+        2
+      ],
+      "categorias": [
+        8
+      ],
+      "precio": 69.99,
+      "urlImagen": "https://i.pinimg.com/1200x/73/76/16/7376161d93cba6f27a286d593bbc3e5a.jpg"
+    },
+    {
+      "id": "12",
+      "nombre": "Hollow Knight",
+      "descripcion": "Una aventura de acción clásica en 2D en un vasto mundo interconectado.",
+      "fechaLanzamiento": "2017-02-24",
+      "compania": "Team Cherry",
+      "plataformas": [
+        1,
+        4
+      ],
+      "categorias": [
+        3,
+        8
+      ],
+      "precio": 14.99,
+      "urlImagen": "https://i.pinimg.com/736x/fc/85/fe/fc85fe47b9243ba856d88a29559ce8f0.jpg"
+    },
+    {
+      "id": "13",
+      "nombre": "The Witcher 3: Wild Hunt",
+      "descripcion": "Conviértete en un cazador de monstruos profesional y embárcate en una aventura épica.",
+      "fechaLanzamiento": "2015-05-19",
+      "compania": "CD Projekt Red",
+      "plataformas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "categorias": [
+        8,
+        9
+      ],
+      "precio": 39.99,
+      "urlImagen": "https://i.pinimg.com/736x/c8/29/b5/c829b51b7bec75abba4bb5f47ad821ee.jpg"
+    },
+    {
+      "id": "14",
+      "nombre": "Doom Eternal",
+      "descripcion": "Las armadas del infierno han invadido la Tierra. Conviértete en el Slayer.",
+      "fechaLanzamiento": "2020-03-20",
+      "compania": "id Software",
+      "plataformas": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "categorias": [
+        4
+      ],
+      "precio": 39.99,
+      "urlImagen": "https://i.pinimg.com/1200x/dd/d4/03/ddd403e1e96945dff8843c05978967da.jpg"
+    },
+    {
+      "id": "15",
+      "nombre": "Sekiro: Shadows Die Twice",
+      "descripcion": "Explora el Japón de la era Sengoku a finales del siglo XVI.",
+      "fechaLanzamiento": "2019-03-22",
+      "compania": "FromSoftware",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        8
+      ],
+      "precio": 59.99,
+      "urlImagen": "https://i.pinimg.com/1200x/74/f7/81/74f781244f033ec13c0f3fbd7b95b0e3.jpg"
+    },
+    {
+      "id": "16",
+      "nombre": "Super Mario Odyssey",
+      "descripcion": "Únete a Mario en una aventura masiva en 3D alrededor del mundo.",
+      "fechaLanzamiento": "2017-10-27",
+      "compania": "Nintendo",
+      "plataformas": [
+        4
+      ],
+      "categorias": [
+        3,
+        8
+      ],
+      "precio": 59.99,
+      "urlImagen": "https://i.pinimg.com/736x/aa/38/64/aa3864b6ffff42758ac8ff6b7be7303c.jpg"
+    },
+    {
+      "id": "17",
+      "nombre": "Grand Theft Auto V",
+      "descripcion": "Vive las vidas de tres criminales muy diferentes en Los Santos.",
+      "fechaLanzamiento": "2013-09-17",
+      "compania": "Rockstar North",
+      "plataformas": [
+        1,
+        2,
+        3
+      ],
+      "categorias": [
+        8
+      ],
+      "precio": 29.99,
+      "urlImagen": "https://i.pinimg.com/1200x/d2/55/ac/d255ac78bb40edc96076bb4c22a32504.jpg"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

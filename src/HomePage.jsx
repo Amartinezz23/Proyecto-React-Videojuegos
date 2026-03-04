@@ -60,10 +60,10 @@ const HomePage = ({ onClickVideojuego }) => {
             setPlataformas(p.data);
 
             if (categoriasSeleccionadas.length === 0) {
-                setCategoriasSeleccionadas(c.data.map(cat => cat.id));
+                setCategoriasSeleccionadas(c.data.map(cat => Number(cat.id)));
             }
             if (plataformasSeleccionadas.length === 0) {
-                setPlataformasSeleccionadas(p.data.map(plat => plat.id));
+                setPlataformasSeleccionadas(p.data.map(plat => Number(plat.id)));
             }
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -79,8 +79,8 @@ const HomePage = ({ onClickVideojuego }) => {
     // Ideally filters should be server-side too. 
     // For now, I'll keep the UI simple.
     const juegosFiltrados = videojuegos.filter(juego =>
-        juego.categorias?.every(id => categoriasSeleccionadas.includes(Number(id))) &&
-        juego.plataformas?.every(id => plataformasSeleccionadas.includes(Number(id)))
+        juego.categorias?.some(id => categoriasSeleccionadas.includes(Number(id))) &&
+        juego.plataformas?.some(id => plataformasSeleccionadas.includes(Number(id)))
     );
 
     const handlePageChange = (event, value) => {
@@ -123,12 +123,12 @@ const HomePage = ({ onClickVideojuego }) => {
                     <MenuCategoria
                         categorias={categorias}
                         categoriasSeleccionadas={categoriasSeleccionadas}
-                        onChangeCategoria={(id) => setCategoriasSeleccionadas(prev => prev.includes(id) ? prev.filter(c => c !== id) : [...prev, id])}
+                        onChangeCategoria={(id) => setCategoriasSeleccionadas(prev => prev.includes(Number(id)) ? prev.filter(c => c !== Number(id)) : [...prev, Number(id)])}
                     />
                     <MenuPlataforma
                         plataformas={plataformas}
                         plataformasSeleccionadas={plataformasSeleccionadas}
-                        onChangePlataforma={(id) => setPlataformasSeleccionadas(prev => prev.includes(id) ? prev.filter(p => p !== id) : [...prev, id])}
+                        onChangePlataforma={(id) => setPlataformasSeleccionadas(prev => prev.includes(Number(id)) ? prev.filter(p => p !== Number(id)) : [...prev, Number(id)])}
                     />
                 </Box>
 

@@ -3,13 +3,17 @@ const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto, Comentario } = require('./db');
+const { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto, Comentario, Reporte } = require('./db');
+const axios = require('axios');
 const { Op } = require('sequelize');
 const { auth, isAdmin } = require('./middleware/auth');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Health check
+app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
 // Auth Routes
 app.post('/api/register', async (req, res) => {
@@ -72,7 +76,9 @@ app.get('/api/videojuegos', async (req, res) => {
         if (userId) {
             const hidden = await HiddenGame.findAll({ where: { UserId: userId } });
             const hiddenIds = hidden.map(h => h.VideojuegoId);
-            where = { id: { [Op.notIn]: hiddenIds } };
+            if (hiddenIds.length > 0) {
+                where.id = { [Op.notIn]: hiddenIds };
+            }
         }
 
         const { count, rows } = await Videojuego.findAndCountAll({
@@ -113,7 +119,6 @@ app.get('/api/videojuegos', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
-
 // Voting Route
 app.post('/api/videojuegos/:id/votar', auth, async (req, res) => {
     try {
@@ -132,6 +137,29 @@ app.post('/api/videojuegos/:id/votar', auth, async (req, res) => {
         }
 
         res.json({ message: 'Vote registered', voto });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Game Routes - Only Mine
+app.get('/api/videojuegos/mine', auth, async (req, res) => {
+    try {
+        const hidden = await HiddenGame.findAll({ where: { UserId: req.user.id } });
+        const hiddenIds = hidden.map(h => h.VideojuegoId);
+        console.log(`Getting games for user ${req.user.id}, hidden:`, hiddenIds);
+
+        let where = { UserId: req.user.id };
+        if (hiddenIds.length > 0) {
+            where.id = { [Op.notIn]: hiddenIds };
+        }
+        console.log('Final where clause:', where);
+
+        const games = await Videojuego.findAll({
+            where,
+            include: [{ model: User, as: 'user', attributes: ['username'] }]
+        });
+        res.json(games);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -225,22 +253,11 @@ app.delete('/api/comentarios/:id', auth, async (req, res) => {
     }
 });
 
-// Game Routes - Only Mine
-app.get('/api/videojuegos/mine', auth, async (req, res) => {
-    try {
-        const games = await Videojuego.findAll({
-            where: { userId: req.user.id },
-            include: [{ model: User, as: 'user', attributes: ['username'] }]
-        });
-        res.json(games);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+
 
 app.post('/api/videojuegos', auth, async (req, res) => {
     try {
-        const game = await Videojuego.create({ ...req.body, userId: req.user.id });
+        const game = await Videojuego.create({ ...req.body, UserId: req.user.id });
         res.status(201).json(game);
     } catch (error) {
         res.status(400).json({ error: error.message });
@@ -252,7 +269,7 @@ app.put('/api/videojuegos/:id', auth, async (req, res) => {
         const game = await Videojuego.findByPk(req.params.id);
         if (!game) return res.status(404).json({ error: 'Game not found' });
 
-        if (game.userId !== req.user.id && req.user.role !== 'admin') {
+        if (game.UserId !== req.user.id && req.user.role !== 'admin') {
             return res.status(403).json({ error: 'Unauthorized to update this game' });
         }
 
@@ -268,25 +285,24 @@ app.delete('/api/videojuegos/:id', auth, async (req, res) => {
         const game = await Videojuego.findByPk(req.params.id);
         if (!game) return res.status(404).json({ error: 'Game not found' });
 
+        console.log(`User ${req.user.id} (${req.user.role}) attempting to delete game ${game.id}`);
+
         // Admin can delete anything permanently
         if (req.user.role === 'admin') {
             await game.destroy();
+            console.log(`Game ${game.id} permanently deleted by admin`);
             return res.json({ message: 'Game permanently deleted by admin' });
         }
 
-        // Users can hide generic games or games added by others
-        // BUT they can "delete" (hide) their own games too
-        // The user specifically asked: "el usuario solo puede borrar sus juegos"
-        // This usually means they can't delete other people's stuff.
-        // But they also said: "si juan borrar su juego, pepito le siga saliendo"
-        // So User "Delete" = Hide for self.
-
+        // Users hide for themselves
         await HiddenGame.findOrCreate({
             where: { UserId: req.user.id, VideojuegoId: game.id }
         });
 
+        console.log(`Game ${game.id} hidden for user ${req.user.id}`);
         res.json({ message: 'Game hidden from your view' });
     } catch (error) {
+        console.error('Delete error:', error);
         res.status(500).json({ error: error.message });
     }
 });
@@ -304,9 +320,106 @@ app.post('/api/init', auth, isAdmin, async (req, res) => {
     } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-const PORT = process.env.PORT || 5000;
-sequelize.sync().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
+// Reporting Routes
+app.post('/api/videojuegos/:id/reportar', auth, async (req, res) => {
+    try {
+        const { motivo } = req.body;
+        const reporte = await Reporte.create({
+            motivo,
+            UserId: req.user.id,
+            VideojuegoId: req.params.id
+        });
+        res.status(201).json(reporte);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
 });
+
+app.get('/api/admin/reportados', auth, isAdmin, async (req, res) => {
+    try {
+        const reportados = await Videojuego.findAll({
+            include: [
+                { model: Reporte, as: 'reportes', required: true },
+                { model: User, as: 'user', attributes: ['username'] }
+            ]
+        });
+        res.json(reportados);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// AI Assistant Route
+app.post('/api/ai/chat', auth, async (req, res) => {
+    try {
+        const { message } = req.body;
+        const ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
+
+        // 1. Fetch data for context
+        const [games, cats, plats] = await Promise.all([
+            Videojuego.findAll(),
+            Categoria.findAll(),
+            Plataforma.findAll()
+        ]);
+
+        const catMap = Object.fromEntries(cats.map(c => [c.id, c.nombre]));
+        const platMap = Object.fromEntries(plats.map(p => [p.id, p.nombre]));
+
+        // Map IDs to names for the AI
+        const gamesList = games.map(g => ({
+            id: g.id,
+            nombre: g.nombre,
+            descripcion: g.descripcion,
+            compania: g.compania,
+            precio: g.precio,
+            categorias: Array.isArray(g.categorias) ? g.categorias.map(id => catMap[id] || id) : [],
+            plataformas: Array.isArray(g.plataformas) ? g.plataformas.map(id => platMap[id] || id) : []
+        }));
+
+        const systemPrompt = `You are a helpful video game assistant for a specialized catalog. 
+Your goal is to help users find and recommend games ONLY from our current database.
+DATABASE: ${JSON.stringify(gamesList)}
+
+RULES:
+1. ONLY recommend games that are listed in the DATABASE above.
+2. If the user asks for a game NOT in the database, politely explain that we don't have it and suggest something similar from our catalog.
+3. Be concise and helpful. Don't mention the internal database format or JSON.
+4. If asked about prices, use the data from the database.
+5. Use a friendly, gaming-expert tone.
+6. IMPORTANT: Do NOT include your internal reasoning or <think> tags. Only provide the final response to the user.`;
+
+        // 2. Call Ollama
+        const ollamaResponse = await axios.post(`${ollamaUrl}/api/generate`, {
+            model: 'lfm2.5-thinking',
+            prompt: `System: ${systemPrompt}\nUser: ${message}\nAssistant:`,
+            stream: false
+        });
+
+        let aiResponse = ollamaResponse.data.response;
+
+        // Clean thinking tags: remove everything from <think> up to and including </think>
+        aiResponse = aiResponse.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+
+        res.json({ response: aiResponse });
+    } catch (error) {
+        console.error('AI Error:', error.message);
+        res.status(500).json({ error: 'AI Assistant is currently unavailable. Make sure Ollama is running.' });
+    }
+});
+
+const PORT = process.env.PORT || 5000;
+
+sequelize.authenticate()
+    .then(() => {
+        console.log('Database connection has been established successfully.');
+        return sequelize.sync();
+    })
+    .then(() => {
+        console.log('Database synchronized.');
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch(err => {
+        console.error('Unable to start server:', err);
+    });

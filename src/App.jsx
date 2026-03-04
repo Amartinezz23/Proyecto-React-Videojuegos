@@ -17,6 +17,8 @@ import HomePage from './HomePage'
 import MyGamesPage from './MyGamesPage'
 import AddGamePage from './AddGamePage'
 import DetailPage from './DetailPage'
+import AdminDashboard from './AdminDashboard'
+import AIAssistant from './AIAssistant'
 import Footer from './Footer'
 
 function App() {
@@ -122,9 +124,11 @@ function App() {
             <Route path="/mis-juegos" element={<MyGamesPage onClickVideojuego={handleGameClick} />} />
             <Route path="/nuevo" element={<AddGamePage />} />
             <Route path="/detalle/:id" element={<DetailPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </Container>
 
+        <AIAssistant />
         <Footer />
       </Box>
     </ThemeProvider>

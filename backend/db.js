@@ -93,9 +93,16 @@ const Comentario = sequelize.define('Comentario', {
     parentId: { type: DataTypes.INTEGER, allowNull: true }
 });
 
+const Reporte = sequelize.define('Reporte', {
+    motivo: {
+        type: DataTypes.STRING,
+        allowNull: false
+    }
+});
+
 // Relationships
-User.hasMany(Videojuego, { foreignKey: 'userId' });
-Videojuego.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+User.hasMany(Videojuego, { foreignKey: 'UserId' });
+Videojuego.belongsTo(User, { foreignKey: 'UserId', as: 'user' });
 
 User.belongsToMany(Videojuego, { through: HiddenGame, foreignKey: 'UserId', as: 'hiddenVideojuegos' });
 Videojuego.belongsToMany(User, { through: HiddenGame, foreignKey: 'VideojuegoId', as: 'hidingUsers' });
@@ -115,4 +122,10 @@ Comentario.belongsTo(Videojuego, { foreignKey: 'VideojuegoId' });
 Comentario.hasMany(Comentario, { foreignKey: 'parentId', as: 'replies' });
 Comentario.belongsTo(Comentario, { foreignKey: 'parentId', as: 'parent' });
 
-module.exports = { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto, Comentario };
+User.hasMany(Reporte, { foreignKey: 'UserId' });
+Reporte.belongsTo(User, { foreignKey: 'UserId' });
+
+Videojuego.hasMany(Reporte, { foreignKey: 'VideojuegoId', as: 'reportes' });
+Reporte.belongsTo(Videojuego, { foreignKey: 'VideojuegoId' });
+
+module.exports = { sequelize, User, Videojuego, Categoria, Plataforma, HiddenGame, Voto, Comentario, Reporte };

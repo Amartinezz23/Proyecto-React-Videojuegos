@@ -99,13 +99,26 @@ const DetailPage = () => {
         }
     };
 
+    const handleReport = async () => {
+        const motivo = window.prompt("Why is this game inappropriate?");
+        if (!motivo) return;
+        try {
+            await axios.post(`${API_URL}/videojuegos/${id}/reportar`, { motivo }, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            alert("Game reported successfully. Thank you!");
+        } catch (error) {
+            alert(error.response?.data?.error || "Error reporting game");
+        }
+    };
+
     const handleEliminar = async () => {
         if (!window.confirm("Are you sure you want to delete/hide this game?")) return;
         try {
             await axios.delete(`${API_URL}/videojuegos/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
-            navigate(-1);
+            navigate('/mis-juegos');
         } catch (error) {
             alert(error.response?.data?.error || "Error deleting game");
         }
@@ -215,7 +228,7 @@ const DetailPage = () => {
                                 </Typography>
                             </Stack>
 
-                            <Box sx={{ pt: 2 }}>
+                            <Stack direction="row" spacing={2} sx={{ pt: 2 }}>
                                 <Button
                                     variant="outlined"
                                     color="error"
@@ -232,7 +245,26 @@ const DetailPage = () => {
                                 >
                                     {user.role === 'admin' ? 'Delete Permanently' : 'Remove from My View'}
                                 </Button>
-                            </Box>
+
+                                {user.role !== 'admin' && (
+                                    <Button
+                                        variant="outlined"
+                                        color="warning"
+                                        startIcon={<FlagIcon />}
+                                        onClick={handleReport}
+                                        sx={{
+                                            borderRadius: '12px',
+                                            borderColor: 'rgba(255, 152, 0, 0.3)',
+                                            '&:hover': {
+                                                borderColor: '#ff9800',
+                                                background: 'rgba(255, 152, 0, 0.1)'
+                                            }
+                                        }}
+                                    >
+                                        Report
+                                    </Button>
+                                )}
+                            </Stack>
                         </Stack>
                     </Grid>
                 </Grid>

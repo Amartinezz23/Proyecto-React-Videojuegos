@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: always
+
+  backend:
+    build: ./backend
+    container_name: game-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - JWT_SECRET=supersecret123
+      - OLLAMA_URL=http://ollama:11434
+    depends_on:
+      - ollama
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    restart: always
+
+  frontend:
+    build: .
+    container_name: game-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  ollama_data:

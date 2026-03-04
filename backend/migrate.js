@@ -41,7 +41,7 @@ async function migrate() {
                 precio: juego.precio.toString(),
                 categorias: juego.categorias,
                 plataformas: juego.plataformas,
-                userId: admin.id,
+                UserId: admin.id,
                 isGeneric: true
             });
         }

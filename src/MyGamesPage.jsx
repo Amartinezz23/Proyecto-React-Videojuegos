@@ -20,12 +20,9 @@ const MyGamesPage = ({ onClickVideojuego }) => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const [response] = await Promise.all([
-                axios.get(`${API_URL}/videojuegos/mine`, {
-                    headers: { Authorization: `Bearer ${token}` }
-                }),
-                new Promise(resolve => setTimeout(resolve, 4000)) // Force 4s
-            ]);
+            const response = await axios.get(`${API_URL}/videojuegos/mine`, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             setVideojuegos(response.data);
         } catch (error) {
             console.error("Error fetching my games:", error);
